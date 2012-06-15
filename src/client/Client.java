@@ -9,6 +9,7 @@ public class Client {
 	
 	public Client() {
 		System.out.println("Client Starting...");
+		Window window = new Window();
 		try {
 			connection = new ClientConnection("127.0.0.1",40000);
 		} catch (UnknownHostException e) {
