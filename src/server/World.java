@@ -13,6 +13,7 @@ public class World {
 		people.add(p);
 	}
 	
-	public void remov.Person(Person p) {
+	public void removePerson(Person p) {
+		people.remove(p);
 	}
 }
