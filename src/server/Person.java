@@ -2,10 +2,16 @@ package server;
 
 public class Person {
 	private Position position;
-	public Person(Position p) {
-		position = p;
+	private final String name;
+	
+	public Person(String name) {
+		position = new Position(0,0,0);
+		this.name = name;
 	}
 	public Position getPosition() {
 		return position;
+	}
+	public String getName() {
+		return name;
 	}
 }
