@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class ServerConnection extends Thread {
 	private ServerSocket socket;
 	private ArrayList<ServerConnectionThread> connectionthreads;
+	//FIXME: Finished connections are never removed from list!!!
 	private boolean islive;
 	
 	public ServerConnection(int port) throws IOException {
