@@ -58,7 +58,7 @@ public class ServerConnectionThread extends Thread {
 				islive=false;
 			}
 		}
-		System.out.print("Closing client connection... ");
+		System.out.print("Closing connection to client... ");
 		try {
 			synchronized (this) {
 				in.close();
