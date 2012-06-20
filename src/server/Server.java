@@ -1,6 +1,8 @@
 package server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Server {
 	
@@ -21,6 +23,20 @@ public class Server {
 			System.out.println("Failed.");
 			System.err.println("Failed to set up network connection.");
 		}
+		boolean islive = true;
+		
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+		
+		while(islive) {
+			try {
+				if(bufferedReader.readLine().equals("quit")){
+					islive=false;
+				}
+			} catch (IOException e) {
+				islive=false;
+			}
+		}
+		connection.close();
 	}
 	
 	public static World getWorld() {
