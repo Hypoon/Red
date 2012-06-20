@@ -13,6 +13,7 @@ public class ServerConnectionThread extends Thread {
 	private BufferedReader in;
 	private Socket socket;
 	private boolean islive;
+	private ReceivedDataHandler rdh;
 	
 	public ServerConnectionThread(Socket socket) throws IOException {
 		super("ServerConnectionThread");
@@ -46,11 +47,8 @@ public class ServerConnectionThread extends Thread {
 			try {
 				if (in.ready()) {
 					String str = in.readLine();
-					if(str.equals("End.")) {
+					if(rdh.process(str)==-1) {
 						islive=false;
-					}
-					else {
-						System.out.println("Thread says: " + str);
 					}
 				}
 			} catch (IOException e) {

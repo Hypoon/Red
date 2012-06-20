@@ -1,11 +1,10 @@
 package server;
 
 import java.io.IOException;
-//import java.util.ArrayList;
 
 public class Server {
 	
-	World world;
+	private static World world;
 	
 	public Server() {
 		System.out.println("Server Initialization Process Started.");
@@ -36,4 +35,9 @@ public class Server {
 			}
 		}
 	}
+	
+	public static World getWorld() {
+		return world;
+	}
+	
 }

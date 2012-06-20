@@ -1,12 +1,13 @@
 package server;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class World {
-	private ArrayList<Person> people;
+	private Set<Person> people;
 	
 	public World() {
-		people = new ArrayList<Person>();
+		people = new HashSet<Person>();
 	}
 	
 	public void addPerson(Person p) {
@@ -15,5 +16,15 @@ public class World {
 	
 	public void removePerson(Person p) {
 		people.remove(p);
+	}
+	
+	public void removePerson(String s) {
+		Person q = null;
+		for(Person p : people) {
+			if(p.getName().equals(s)) {
+				q=p;
+			}
+		}
+		removePerson(q);
 	}
 }
