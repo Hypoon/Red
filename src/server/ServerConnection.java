@@ -13,6 +13,7 @@ public class ServerConnection extends Thread {
 	private boolean islive;
 	
 	public ServerConnection(int port) throws IOException {
+		super("ServerConnection");
 		socket = new ServerSocket(port);
 		socket.setSoTimeout(500);
 		connectionthreads = new HashSet<ServerConnectionThread>();
