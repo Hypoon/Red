@@ -4,16 +4,36 @@ import java.io.IOException;
 //import java.util.ArrayList;
 
 public class Server {
-	//private ArrayList<Person> characters = new ArrayList<Person>();
+	
+	World world;
+	
 	public Server() {
-		System.out.println("Server Starting...");
-		System.out.println("Server Started.");
-		ServerConnection connection;
+		System.out.println("Server Initialization Process Started.");
+		System.out.print("Creating World... ");
+		world = new World();
+		System.out.println("Done.");
+		System.out.print("Setting up network connection... ");
+		ServerConnection connection = null;
 		try {
 			connection = new ServerConnection(40000);
 			connection.start();
+			System.out.println("Done.");
 		} catch (IOException e) {
-			System.err.println("Could not create server connection.");
+			System.out.println("Failed.");
+			System.err.println("Failed to set up network connection.");
+		} finally {
+			if(connection != null){
+				try {
+					connection.close();
+				} catch (IOException f) {
+					System.err.println("Error closing server network connection, trying again.");
+					try {
+						connection.close();
+					} catch (IOException g) {
+						System.err.println("Could not close server network connection.");
+					}
+				}
+			}
 		}
 	}
 }
