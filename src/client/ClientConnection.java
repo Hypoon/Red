@@ -29,7 +29,7 @@ public class ClientConnection extends Thread {
 		out.println(str);
 	}
 	
-	public String receive() throws IOException {
-		return in.readLine();
+	public void close() {
+		
 	}
 }
