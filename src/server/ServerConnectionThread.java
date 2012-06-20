@@ -14,10 +14,12 @@ public class ServerConnectionThread extends Thread {
 	private Socket socket;
 	private boolean islive;
 	private ReceivedDataHandler rdh;
+	private ServerConnection sc;
 	
-	public ServerConnectionThread(Socket socket) throws IOException {
+	public ServerConnectionThread(Socket socket,ServerConnection sc) throws IOException {
 		super("ServerConnectionThread");
 		this.socket = socket;
+		this.sc = sc;
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
 		try {
@@ -65,6 +67,7 @@ public class ServerConnectionThread extends Thread {
 			}
 		} catch (IOException e) {}
 		System.out.println("Done.");
+		sc.finishedThread(this);
 	}
 	
 	public synchronized void send(String str) {

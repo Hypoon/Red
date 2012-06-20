@@ -4,18 +4,18 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class ServerConnection extends Thread {
 	private ServerSocket socket;
-	private ArrayList<ServerConnectionThread> connectionthreads;
+	private HashSet<ServerConnectionThread> connectionthreads;
 	//FIXME: Finished connections are never removed from list!!!
 	private boolean islive;
 	
 	public ServerConnection(int port) throws IOException {
 		socket = new ServerSocket(port);
 		socket.setSoTimeout(500);
-		connectionthreads = new ArrayList<ServerConnectionThread>();
+		connectionthreads = new HashSet<ServerConnectionThread>();
 		islive = false;
 	}
 	
@@ -28,9 +28,11 @@ public class ServerConnection extends Thread {
 				System.out.print("Accepting connection... ");
 				ServerConnectionThread connectionthread = null;
 				try {
-					connectionthread = new ServerConnectionThread(clientsocket);
-					connectionthread.start();
-					connectionthreads.add(connectionthread);
+					synchronized(this) {
+						connectionthread = new ServerConnectionThread(clientsocket,this);
+						connectionthread.start();
+						connectionthreads.add(connectionthread);
+					}
 				} catch (IOException e) {
 					System.out.println("Failed.");
 					System.err.println(e.getMessage());
@@ -42,8 +44,10 @@ public class ServerConnection extends Thread {
 				System.err.println("Failed to accept connection.");
 			}
 		}
-		for(ServerConnectionThread c : connectionthreads) {
-			c.close();
+		synchronized(this) {
+			for(ServerConnectionThread c : connectionthreads) {
+				c.close();
+			}
 		}
 		try {
 			socket.close();
@@ -52,5 +56,10 @@ public class ServerConnection extends Thread {
 	
 	public void close() {
 		islive=false;
+	}
+	
+	public synchronized void finishedThread(ServerConnectionThread ft) {
+		ft.close();
+		connectionthreads.remove(ft);
 	}
 }
