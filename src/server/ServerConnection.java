@@ -24,14 +24,17 @@ public class ServerConnection extends Thread {
 			Socket clientsocket = null;
 			try {
 				clientsocket = socket.accept();
+				System.out.print("Accepting connection... ");
 				ServerConnectionThread connectionthread = null;
 				try {
 					connectionthread = new ServerConnectionThread(clientsocket);
 					connectionthread.start();
 					connectionthreads.add(connectionthread);
 				} catch (IOException e) {
+					System.out.println("Failed.");
 					System.err.println(e.getMessage());
 				}
+				System.out.println("Done.");
 			} catch (SocketTimeoutException ste) {
 				
 			} catch (IOException e) {
