@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 public class ServerConnection extends Thread {
@@ -12,6 +13,7 @@ public class ServerConnection extends Thread {
 	
 	public ServerConnection(int port) throws IOException {
 		socket = new ServerSocket(port);
+		socket.setSoTimeout(500);
 		connectionthreads = new ArrayList<ServerConnectionThread>();
 		islive = false;
 	}
@@ -25,25 +27,26 @@ public class ServerConnection extends Thread {
 				ServerConnectionThread connectionthread = null;
 				try {
 					connectionthread = new ServerConnectionThread(clientsocket);
-					connectionthreads.add(connectionthread);
 					connectionthread.start();
+					connectionthreads.add(connectionthread);
 				} catch (IOException e) {
 					System.err.println(e.getMessage());
 				}
+			} catch (SocketTimeoutException ste) {
+				
 			} catch (IOException e) {
 				System.err.println("Failed to accept connection.");
 			}
 		}
-	}
-	
-	public int numConnections() {
-		return connectionthreads.size();
-	}
-	
-	public void close() throws IOException {
 		for(ServerConnectionThread c : connectionthreads) {
 			c.close();
 		}
-		socket.close();
+		try {
+			socket.close();
+		} catch (IOException e) {}
+	}
+	
+	public void close() {
+		islive=false;
 	}
 }

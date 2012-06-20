@@ -20,19 +20,6 @@ public class Server {
 		} catch (IOException e) {
 			System.out.println("Failed.");
 			System.err.println("Failed to set up network connection.");
-		} finally {
-			if(connection != null){
-				try {
-					connection.close();
-				} catch (IOException f) {
-					System.err.println("Error closing server network connection, trying again.");
-					try {
-						connection.close();
-					} catch (IOException g) {
-						System.err.println("Could not close server network connection.");
-					}
-				}
-			}
 		}
 	}
 	
