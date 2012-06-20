@@ -22,6 +22,7 @@ public class Server {
 		} catch (IOException e) {
 			System.out.println("Failed.");
 			System.err.println("Failed to set up network connection.");
+			return;
 		}
 		boolean islive = true;
 		
